@@ -33,15 +33,20 @@ for epoch in range(nb_epochs+1):
     loss = torch.mean((hypothesis - y_train) ** 2)
     
     #loss로 H(x) 개선
-    optimizer.zero_grad()
-    loss.backward()
-    optimizer.step()
+    optimizer.zero_grad() #gradient를 0으로 초기화
+    loss.backward()  #loss를 미분하여 gradient 계산
+    optimizer.step() #gradient를 사용하여 가중치 업데이트
     
     #100번마다 로그 출력
-    if epoch % 100 == 0:
-        print('Epoch {:4d}/{} w1: {:.3f} w2: {:.3f} w3: {:.3f} b: {:.3f} Loss: {:.6f}'.format(
+    if epoch % 100 == 0: #epoch가 100으로 나누어 떨어질 때
+        print('Epoch {:4d}/{} w1: {:.3f} w2: {:.3f} w3: {:.3f} b: {:.3f} Loss: {:.6f}'.format( 
             epoch, nb_epochs, w1.item(), w2.item(), w3.item(), b.item(), loss.item()
-        ))
+        )) 
+print(b.grad)
+print(w1.grad)
+print(w2.grad)
+print(w3.grad)
+
 
 #행렬 연산을 이용한 방법
 #이번에는 x_train 하나에 모든 샘플을 담음
@@ -84,9 +89,12 @@ for epoch in range(nb_epochs + 1):
 
     # cost로 H(x) 개선
     optimizer.zero_grad()
-    cost.backward()
+    cost.backward() #왜 이름이 backward인가?
     optimizer.step()
 
     print('Epoch {:4d}/{} hypothesis: {} Cost: {:.6f}'.format(
         epoch, nb_epochs, hypothesis.squeeze().detach(), cost.item()
     ))
+
+print(b.grad)
+print(W.grad)
