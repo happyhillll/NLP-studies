@@ -200,5 +200,4 @@ print(x.mul(2.)) # 2를 곱한 새로운 텐서를 반환
 print(x) # x는 변하지 않음
 
 print(x.mul_(2.)) # 언더바를 쓰면 덮어쓸 수 있음
-print(x)
-
+print
