@@ -70,14 +70,8 @@ for epoch in range(nb_epochs + 1): # epoch : 전체 훈련 데이터가 학습�
             epoch, nb_epochs, W.item(), b.item(), cost.item()
         ))
 
-# 결과 : gold, label, gound-truth
+    
 '''
 hyper-parameter : parameter 를 학습시키기 위한 parameter (ex. learning rate) 모델을 학습하기 전에 미리 지정해주는 값
 hyper-parameter sweep : hyper-parameter를 조정하여 모델의 성능을 향상시키는 과정
-    
-    
-    
-
-
-
 '''

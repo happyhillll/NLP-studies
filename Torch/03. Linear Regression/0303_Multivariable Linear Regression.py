@@ -1,4 +1,3 @@
-
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -33,7 +32,7 @@ for epoch in range(nb_epochs+1):
     loss = torch.mean((hypothesis - y_train) ** 2)
     
     #loss로 H(x) 개선
-    optimizer.zero_grad() #gradient를 0으로 초기화
+    optimizer.zero_grad() #gradient를 0으로 초기화 : gradient가 누적되지 않도록
     loss.backward()  #loss를 미분하여 gradient 계산
     optimizer.step() #gradient를 사용하여 가중치 업데이트
     
@@ -89,7 +88,7 @@ for epoch in range(nb_epochs + 1):
 
     # cost로 H(x) 개선
     optimizer.zero_grad()
-    cost.backward() #왜 이름이 backward인가?
+    cost.backward() #왜 이름이 backward인가? cost를 미분하여 gradient를 계산하는 것이기 때문. 가중치를 구하기 위한 것임
     optimizer.step()
 
     print('Epoch {:4d}/{} hypothesis: {} Cost: {:.6f}'.format(
