@@ -70,6 +70,8 @@ x_train  =  torch.FloatTensor([[73,  80,  75],
                                [73,  66,  70]])  
 y_train  =  torch.FloatTensor([[152],  [185],  [180],  [196],  [142]])
 
+print(x_train.shape)
+
 # 모델 초기화
 W = torch.zeros((3, 1), requires_grad=True)
 b = torch.zeros(1, requires_grad=True)
