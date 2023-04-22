@@ -1,3 +1,18 @@
+'''
+
+view : tensor의 shape을 변경
+
+
+- getloader : 데이터를 불러오는 함수 먼저 만들기
+- nn.module 만들기
+- cross entropy loss 쓰기
+
+- batchsize라고 안하고 example 개수라고 하는게 맞음
+- view로 [n_sample, -1] 로 바꿔주기
+
+'''
+
+
 #데이터 읽기
 import torch
 import torch.nn as nn
@@ -22,6 +37,8 @@ train_data = datasets.MNIST(root = './data/02/',
                             train=True,
                             download=True,
                             transform=transforms.ToTensor())
+print() #디버깅
+
 test_data = datasets.MNIST(root = './data/02/',
                             train=False,
                             download=True,
@@ -47,7 +64,7 @@ dataset=TensorDataset(image, label)
 #데이터 로더
 dataloader=DataLoader(train_data,batch_size=2,shuffle=True)
 
-print(image.shape) #[1,28,28] : 1차원으로 만들어야 함..
+print(image.shape) #[1,28,28] : 1차원으로 만들어야 함.. > 앞이 1인 이유는 28*28의 example이 1개라는 뜻
 
 #모델과 옵티마이저 설계
 model = nn.Linear(3,1) #data의 shape을 알아야 하는디
