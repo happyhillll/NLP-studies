@@ -1,7 +1,7 @@
 def train():
     loader = get_data_loader()
-    model=Classifier(28*28, 10)
-    optimizer = torch.optim.SGD(model.parameters(),lr=1e-5)
+    model=Classifier(28*28, 10) #input size : 28*28, output size : 10
+    optimizer = torch.optim.SGD(model.parameters(),lr=1e-5) 
     nb_epochs=20
     criterion=nn.CrossEntropyLoss()
     for epoch in range(nb_epochs+1):
@@ -31,3 +31,15 @@ if __name__=="__main__":
     
 
 #그럼 함수 이름이 절대 겹치면 안되는건지?
+
+'''
+train/valid/test
+8:1:1
+
+tp : 
+
+loader는 반복 가능한 object
+
+NSP
+
+'''

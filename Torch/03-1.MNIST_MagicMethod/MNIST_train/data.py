@@ -1,5 +1,5 @@
 from datasets import load_dataset
-from torch.utils.data import dataloader #SGD의 반복 연산을 실행할때 사용하는 미니 배치용 유틸리티 함수
+from torch.utils.data import DataLoader  #SGD의 반복 연산을 실행할때 사용하는 미니 배치용 유틸리티 함수
 import numpy as np
 import torch
 
