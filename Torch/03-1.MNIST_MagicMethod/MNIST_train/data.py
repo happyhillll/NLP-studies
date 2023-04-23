@@ -1,3 +1,9 @@
+'''
+1. 데이터 다운로드
+2. dataloader를 이용해서 데이터를 조금씩 가져오면서 모델에 넣어줘야 한다.
+3. 모델에 넣어줄때는 벡터로 바꿔줘야 한다.
+'''
+
 from datasets import load_dataset
 from torch.utils.data import DataLoader  #SGD의 반복 연산을 실행할때 사용하는 미니 배치용 유틸리티 함수
 import numpy as np

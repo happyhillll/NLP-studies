@@ -1,3 +1,8 @@
+from datasets import load_dataset
+from torch.utils.data import DataLoader  #SGD의 반복 연산을 실행할때 사용하는 미니 배치용 유틸리티 함수
+import numpy as np
+import torch
+
 def train():
     loader = get_data_loader()
     model=Classifier(28*28, 10) #input size : 28*28, output size : 10
@@ -28,7 +33,10 @@ def train():
 
 if __name__=="__main__":
     train()
-    
+
+#파라미터 체크
+print(list(model.parameters()))
+
 
 #그럼 함수 이름이 절대 겹치면 안되는건지?
 
@@ -36,10 +44,10 @@ if __name__=="__main__":
 train/valid/test
 8:1:1
 
-tp : 
+tp : true positive
 
 loader는 반복 가능한 object
 
-NSP
+NSP : Next Sentence Prediction
 
 '''
