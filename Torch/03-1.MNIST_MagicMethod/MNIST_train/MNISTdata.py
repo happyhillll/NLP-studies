@@ -10,14 +10,16 @@ import numpy as np
 import torch
 
 def get_data_loader():
-    dataset = load_dataset('mnist', split='train') #mnist에서 split만 가져오겠다
+    train_ds, test_ds = load_dataset('mnist', split=['train','test']) #mnist에서 split만 가져오겠다
     print()
     def transform_func(examples):
         examples['image']=[torch.FloatTensor(np.array(img)) for img in examples['image']] #examples의 image열에서 img를 vector로 변환
         return examples
-    dataset=dataset.with_transform(transform_func)
-    loader=DataLoader(dataset,batch_size=32, shuffle=True) #image를 벡터로 바꿔준 데이터가 들어가 있는 dataset을 batch size 32로 가져온다.
-    return loader
+    train_ds=train_ds.with_transform(transform_func)
+    test_ds=test_ds.with_transform(transform_func)
+    train_loader=DataLoader(train_ds,batch_size=32, shuffle=True) #image를 벡터로 바꿔준 데이터가 들어가 있는 dataset을 batch size 32로 가져온다.
+    test_loader=DataLoader(test_ds,batch_size=32, shuffle=True)
+    return train_loader, test_loader
 
 if __name__=="__main__":
     get_data_loader()
