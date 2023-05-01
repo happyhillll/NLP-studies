@@ -8,20 +8,20 @@ import torch.nn as nn
 #leaf_data 디버깅해서 shape 확인하고 싶음
 
 def train():
-    train_loader =get_data_loader()
-    model=Classifier(64*64, 33)
+    train_loader, test_loader = get_data_loader()
+    model=Classifier(3*64*64, 33)
     optimizer=torch.optim.SGD(model.parameters(),lr=1e-5)
     nb_epochs=10
     criterion=nn.CrossEntropyLoss()
     for epoch in range(nb_epochs+1):
         epoch_loss=0
-        for batch_idx, (data, target) in enumerate(train_loader): #(data,target) 형태로 묶여져 있음
-            n_sample=data.shape[0]
-            image=data.view(n_sample,-1)
+        for batch_idx, (image,label) in enumerate(train_loader): #(data,target) 형태로 묶여져 있음
+            n_sample=image.shape[0]
+            image=image.view(n_sample,-1)
             preds=model(image)
             
             #loss
-            loss=criterion(preds,target)
+            loss=criterion(preds,label)
             epoch_loss+=loss
             optimizer.zero_grad()
             loss.backward()
