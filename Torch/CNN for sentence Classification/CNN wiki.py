@@ -16,3 +16,8 @@ CNN
 
 - 합성곱층 : 합성곱 연산으로 이미지의 특징 추출
 '''
+def get_vocab():
+    train_data = 'wait for the video and don''t rent it'
+    
+
+list(set(train_data.split()))
