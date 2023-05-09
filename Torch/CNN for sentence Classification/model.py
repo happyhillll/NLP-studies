@@ -15,7 +15,7 @@ class SenCNN(nn.Module):
         emb = self.static(x) #[bsz, seq_len, 300]
         emb = emb.permute(0,2,1) #[bsz, 300, seq_len]
         output=self.conv(emb) #[bsz, n_filter(100), num_sliding]
-        pooled = torch.max(output,2)[0] #[bsz, n_filter]
+        pooled = torch.max(output,2)[0] #[bsz, n_filter] #이거 뭐지??
         
         emb = self.nonstatic(x)  # [bsz, seq_len, 300]
         emb = emb.permute(0, 2, 1)  # [bsz, 300, seq_len]
@@ -24,6 +24,6 @@ class SenCNN(nn.Module):
         
         pooled = torch.concat([pooled,pooled2],dim=1) #[bsz, 2*n_filter]
         
-        y_hat = self.linear(pooled) #[bsz,n_cls]
+        y_hat = self.linear(pooled) #[bsz,n_cls] #이거 (pooled,2) 아닌지???? nn.linear에서는 (100,2)임
         
         return y_hat
