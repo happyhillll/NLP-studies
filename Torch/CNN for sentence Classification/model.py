@@ -20,7 +20,7 @@ class SenCNN(nn.Module):
         emb = self.nonstatic(x)  # [bsz, seq_len, 300]
         emb = emb.permute(0, 2, 1)  # [bsz, 300, seq_len]
         output = self.conv(emb)  # [bsz, n_filter(100), num_sliding]
-        pooled2 = torch.max(output, 2)[0]  # [bsz, n_filter]
+        pooled2 = torch.max(output, 2)[0]  # [bsz, n_filter] 2번째 있는걸 max로 해주고, 나온 값중에 0번째 값을 저장해라. [1]: max의 인덱스를 뽑아줌
         
         pooled = torch.concat([pooled,pooled2],dim=1) #[bsz, 2*n_filter]
         
