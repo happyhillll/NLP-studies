@@ -15,4 +15,3 @@ model = SenCNN()
 for i, batch in enumerate(loader):
     x, y = batch
     hat_y = model(x)  # [bsz, vocab_len]
-    # TODO y, hat_y 이 창리ㅡㄹ loss를 잘 구해서 학습시키기
