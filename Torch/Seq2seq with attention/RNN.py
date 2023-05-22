@@ -11,7 +11,7 @@ class Model(nn.Module):
         if config.embedding_pretrained is not None:
             self.embedding = nn.Embedding.from_pretrained(config.embedding_pretrained, freeze=False)
         else:
-            self.embedding = nn.Embedding(config.n_vocab, config.embed, padding_idx=config.n_vocab - 1)
+            self.embedding = nn.Embedding(config.n_avocab, config.embed, padding_idx=config.n_vocab - 1)
         self.lstm = nn.LSTM(config.embed, config.hidden_size, config.num_layers,
                             bidirectional=True, batch_first=True, dropout=config.dropout)
         self.tanh1 = nn.Tanh()
