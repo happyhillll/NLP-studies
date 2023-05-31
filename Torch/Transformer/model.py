@@ -69,7 +69,7 @@ class Encoder(nn.Module):
     def __init__(self, layer, N):
         super(Encoder, self).__init__()
         self.layers = clones(layer, N) #인코더의 레이어를 중복되지 않게 N개 복사 
-        self.norm = LayerNorm(layer.size) #인코더의 레이어를 정규화 
+        self.norm = LayerNorm(layer.size) #인코더의 레이어마다 정규화 
 
     def forward(self, x, mask): 
         "Pass the input (and mask) through each layer in turn."
