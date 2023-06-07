@@ -225,7 +225,7 @@ class Embeddings(nn.Module):
         self.d_model = d_model 
 
     def forward(self, x):
-        return self.lut(x) * math.sqrt(self.d_model) #논문에서는 sqrt(d_model)로 나눠준다.
+        return self.lut(x) * math.sqrt(self.d_model) #논문에서는 sqrt(d_model)로 나눠줌
 
 #Positional Encoding
 class PositionalEncoding(nn.Module):
