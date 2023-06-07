@@ -74,7 +74,7 @@ class Encoder(nn.Module):
     def forward(self, x, mask): 
         "Pass the input (and mask) through each layer in turn."
         for layer in self.layers: #인코더의 레이어를 순서대로 넣는다.
-            x = layer(x, mask) #⭐️
+            x = layer(x, mask) #layer = Encoderlayer임. 근데 저 mask는 뭐임?
         return self.norm(x)    #정규화
 
 #정규화
