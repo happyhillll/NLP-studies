@@ -1,93 +1,50 @@
-```python
-#train.py
+#model.py
 import torch.nn as nn
+import torch.nn.functional as F 
 import torch
-from dataset import SenCLSDataset
-from torch.utils.data import DataLoader
-from model import LSTM
-from vocab import get_vocab
-from ds import *
-from torch.utils.data import random_split
-
-print(torch.__version__)
-print(torch.backends.mps.is_available())
-print(torch.backends.mps.is_built())
 mps_device = torch.device("mps")
-dataset = ds()
-x_train, y_train = dataset.get_train()
-data = list(zip(x_train, y_train))
 
-vocab = get_vocab()
-dataset = SenCLSDataset(data, vocab)
-# loader = DataLoader(dataset, batch_size=10)
-train_size = int(0.8 * len(dataset))
-val_size = len(dataset) - train_size
-train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
-train_loader = DataLoader(train_dataset, batch_size=32, shuffle= True)
-val_loader = DataLoader(val_dataset, batch_size=32)
 
-model = LSTM (len(vocab), 300,128, 2, 0.5)
-model.to(mps_device)
-
-optimizer = torch.optim.Adam(model.parameters(), lr =1e-3 )
-criterion = nn.BCEWithLogitsLoss()
-
-best_val_loss = float('inf')
-patience = 3
-counter = 0
-nb_epochs = 5
-
-for epoch in range(nb_epochs+1):
-    print('Epoch [{}/{}]'.format(epoch + 1, nb_epochs))
-    avg_cost = 0
-
-    model.train()
-    for i, (x,y) in enumerate(train_loader):  #batch 로 받는걸 x,y 로 나누어줌
-        # y= y.float()
-        x = x.to(mps_device)
-        y = y.to(mps_device)
-        outputs = model(x)
-        cost = criterion(outputs.squeeze(), y.float())
-        optimizer.zero_grad()
-        cost.backward()
-        optimizer.step()
+class LSTM(nn.Module):
+    def __init__(self,vocab_len, dim, hidden_dim, num_layers, dropout):
+        super().__init__()
+        self.embedding = nn.Embedding(num_embeddings=vocab_len, embedding_dim=dim, padding_idx=vocab_len -1) #padding_idx는 패딩 인덱스를 저장하는 정수, 입력 텍스트를 특정 길이로 맞추기 위해 사용
+        self.lstm = nn.LSTM(dim, hidden_size= hidden_dim, num_layers= num_layers, bidirectional=True, batch_first=True, dropout=dropout)  
+        self.tanh1 = nn.Tanh() #non-linear function
+        self.w = nn.Parameter(torch.zeros(hidden_dim * 2)) # 2 for bidirection
+        self.fc1 = nn.Linear(hidden_dim *2, 64) # 64 for attention 일반적으로 사용하는 숫자
+        self.fc = nn.Linear(64, 1)
         
-        # print(f"x : {x}")
-        # print(f"Outputs: {outputs}")
-        # print(f"Ground truth: {y}")
+    def forward(self, x):
+        emb = self.embedding(x)
+        output, _  = self.lstm(emb) # output: [batch_size, seq_len, hidden_dim * 2]
+        M = self.tanh1(output) # M: [batch_size, seq_len, hidden_dim * 2] input sequence에 대한 정보를 담고 있음
+        # hidden state에 얼만큼의 가중치를 두어야할지 결정함
+        # alpha = F.softmax(torch.matmul(M, self.w), dim=1).unsqueeze(-1)
+        alpha = F.softmax((M * self.w).sum(dim=2), dim=1).unsqueeze(-1)  
+        #  M * self.w: input sequence * attention weights = the weighted sum of the input sequence (importance of each word)
+        #  sum(dim=2): sum of each word in the input sequence
+        #  softmax: normalize the weighted sum of the input sequence
+        #  unsqueeze(-1): add one dimension at the end of the tensor
+        out = output * alpha  
+        out = torch.sum(out, 1) # out: [batch_size, hidden_dim * 2] > [batch_size, 1]
+        out = F.relu(out)
+        out = self.fc1(out) 
+        out = self.fc(out)
         
-        print('Train Epoch [{}/{}], idx {:4d}, Cost: {:.6f}'.format(epoch + 1, nb_epochs, i, cost))
-        
-        
-    # if epoch % 10 == 0:
-    #     # 10번마다 로그 출력
-    #     print('Epoch {:4d}/{} Cost: {:.6f}'.format(
-    #       epoch, nb_epochs, cost.item()
-    #   ))
-        
-    model.eval()
-    val_loss = 0 
-    
-    with torch.no_grad():
-        for i, (x, y) in enumerate(val_loader):
-            x = x.to(mps_device)
-            y = y.to(mps_device)
-            outputs = model(x)
-            cost = criterion(outputs.squeeze(), y.float())
-            val_loss += cost.item()
+        return out
 
-    val_loss /= len(val_loader)
-    print('Val Epoch [{}/{}], Validation Loss: {:.6f}'.format(epoch + 1, nb_epochs, val_loss))
-
-    if val_loss < best_val_loss:
-        best_val_loss = val_loss
-        torch.save(model.state_dict(), './best_model.pth')
-        print('Model saved at epoch {}, with Validation Loss: {:.6f}'.format(epoch + 1, val_loss))
-        counter = 0
-    else:
-        counter += 1
-        print('No improvement in validation loss for {} epoch(s)'.format(counter))
-        if counter >= patience:
-            print('Early stopping triggered.')
-            break
-```
+'''
+vocab_len: vocab 개수
+dim: embedding 차원
+hidden_dim: lstm hidden 차원
+num_layers: lstm layer 개수
+dropout: dropout 비율
+'''
+'''
+1. 임베딩
+2. lstm
+3. tanh
+4. attention
+5. fc
+'''

@@ -3,7 +3,6 @@ import torch.nn as nn
 import torch
 from dataset import SenCLSDataset
 from torch.utils.data import DataLoader
-from model import LSTM
 from vocab import get_vocab
 from ds import *
 from torch.utils.data import random_split
@@ -25,7 +24,7 @@ train_dataset, val_dataset = random_split(dataset, [train_size, val_size])
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle= True)
 val_loader = DataLoader(val_dataset, batch_size=32)
 
-model = LSTM (len(vocab), 300,128, 2, 0.5)
+model = LSTM(len(vocab), 300,128, 2, 0.5)
 model.to(mps_device)
 
 optimizer = torch.optim.Adam(model.parameters(), lr =1e-3 )
