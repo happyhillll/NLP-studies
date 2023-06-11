@@ -5,11 +5,24 @@ from dataset import CNNextractDataset
 from torch.utils.data import DataLoader
 from ds import *
 from torch.utils.data import random_split
+from model import CNNextract
+from vocab import get_character
 
-print(torch.__version__)
-print(torch.backends.mps.is_available())
-print(torch.backends.mps.is_built())
-mps_device = torch.device("mps")
-dataset = ds()
-x_train, y_train = dataset.get_train()
-data = list(zip(x_train, y_train))
+from datasets import load_dataset
+import numpy as np
+
+dataset = load_dataset("klue", "ner")
+
+data = []
+for tokens, ner_tags in zip(dataset["train"]["tokens"], dataset["train"]["ner_tags"]):
+    sentence_data = [(token, ner_tag) for token, ner_tag in zip(tokens, ner_tags)]
+    data.extend(sentence_data)
+    
+char=get_character() #char 사전
+dataset = CNNextractDataset(data, char)
+loader=DataLoader(dataset,batch_size=32)
+model=CNNextract() 
+
+for i,batch in enumerate(loader):
+    x,y=batch
+    y_hat=model(x)
