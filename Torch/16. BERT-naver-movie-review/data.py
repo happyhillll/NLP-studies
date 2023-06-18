@@ -1,53 +1,27 @@
-# data.py
+# ds.py
+# 데이터 불러오고, x_train, y_train, x_test, y_test 리스트로 만들기
 
-from pathlib import Path
-import csv
-import random
+import urllib.request
+import pandas as pd
 
-random.seed(42)
+class ds:
+    def __init__(self):
+        file_path1 = urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_train.txt", filename="ratings_train.txt")
+        file_path2 = urllib.request.urlretrieve("https://raw.githubusercontent.com/e9t/nsmc/master/ratings_test.txt", filename="ratings_test.txt")
+        
+        self.train_data = pd.read_table('ratings_train.txt')
+        self.test_data = pd.read_table('ratings_test.txt')
 
-def readcsv(
-    path: Path,
-    encoding: str = "UTF8",
-    delimiter: str = ",",
-    ignore_first_row: bool = False,
-):
-    """
-    CSV파일을 읽어 각각의 행의 element들을 list형태로 반환
+        self.x_train = list(self.train_data['document'])[:5000]
+        self.y_train = list(self.train_data['label'])[:5000]
 
-     for a, b, c in readcsv("PATH"):
-         pass
+        self.x_test = list(self.test_data['document'])[:1000]
+        self.y_test = list(self.test_data['label'])[:1000]
 
-    :param path: csv파일
-    :param encoding: 파일의 인코딩(Default: UTF8)
-    :param delimiter: 열 구분자(Default: ',')
-    :param ignore_first_row: 첫 행 무시할지 여부 - 첫 행이 제목일 경우 True로 설정
-    :return: 각 행의 element들
-    """
-    with open(path, encoding=encoding, newline="") as f:
-        reader = iter(csv.reader(f, delimiter=delimiter))
-        try:
-            first_row = next(reader)
-            if not ignore_first_row:
-                yield first_row
-        except StopIteration:
-            return
-        except Exception as e:
-            print(f"Error in readcsv: {path}")
-            raise e
-        yield from reader
+#train 가져오기
+    def get_train(self):
+        return self.x_train, self.y_train
 
-
-
-def get_data(data_type):
-    """
-    :param data_type:  "train" or "test"
-    :return: List of (id, text, rating)
-    """
-    path = Path(f"nsmc/ratings_{data_type}.txt")
-    data = list(readcsv(path, delimiter="\t", ignore_first_row=True))
-    random.shuffle(data)
-    return data
-
-if __name__ == "__main__":
-    get_data()
+#test 가져오기
+    def get_test(self):
+        return self.x_test, self.y_test
