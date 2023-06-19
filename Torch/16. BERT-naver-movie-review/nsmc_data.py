@@ -20,8 +20,11 @@ class ds:
 
 #train 가져오기
     def get_train(self):
-        return self.x_train, self.y_train
+        return self.x_train, self.y_train  #문장과 라벨을 리스트로 반환
 
 #test 가져오기
     def get_test(self):
         return self.x_test, self.y_test
+    
+if __name__ == '__main__':
+    print(ds().get_train())

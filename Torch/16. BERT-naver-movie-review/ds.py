@@ -2,6 +2,7 @@
 from torch.utils.data import Dataset
 import torch
 import random
+from nsmc_data import ds
 
 class NSMCDataset(Dataset):
     def __init__(self, data, tokenizer):
@@ -13,8 +14,8 @@ class NSMCDataset(Dataset):
         :param tokenizer:
         :return:
         """
-        texts = [d[1] for d in datas] #데이터 안에 1번째 열을 텍스트로 지정
-        labels = [int(d[2]) for d in datas] #데이터 안에 2번째 열을 레이블(감성)으로 지정
+        texts = ds().get_train()[0] #데이터 안에 1번째 열을 텍스트로 지정
+        labels = ds().get_train()[1] #데이터 안에 2번째 열을 레이블(감성)으로 지정
         """
         texts, labels = [], []
         for d in datas:
@@ -22,7 +23,7 @@ class NSMCDataset(Dataset):
             labels.append(int(d[2]))
         """
 
-        tokens = tokenizer(texts, truncation=True, padding="max_length") #텍스트 토크나이징
+        tokens = tokenizer(texts, truncation=True, padding='max_length') #텍스트 토크나이징
 
 
         tokens.input_ids = torch.LongTensor(tokens.input_ids) #텍스트 ids 

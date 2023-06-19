@@ -3,7 +3,7 @@ from ds import NSMCDataset
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 from model import BERTClassifier
-from data import get_train
+from nsmc_data import *
 from torch.nn import CrossEntropyLoss
 import torch
 from tqdm import tqdm
@@ -26,11 +26,10 @@ def run():
     plm = "klue/roberta-base"
 
     tokenizer = AutoTokenizer.from_pretrained(plm)
-    #이거 해줄 필요 없을듯
-    train_data, test_data = get_data("train"), get_data("test")
+    train_data, test_data = ds().get_train()[0], ds().get_test()[0]
 
-    if DEBUG:
-        train_data, test_data = train_data[:300], test_data[:100]
+    # if DEBUG:
+    #     train_data, test_data = train_data[:300], test_data[:100]
 
     train_data, test_data = NSMCDataset(train_data, tokenizer), NSMCDataset(test_data, tokenizer)
     train_loader = DataLoader(train_data, batch_size=bsz)
@@ -47,3 +46,7 @@ def run():
          'weight_decay_rate': 0.0}
     ]
     optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=lr)
+    
+    
+if __name__ == '__main__':
+    print(run())
