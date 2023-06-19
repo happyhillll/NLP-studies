@@ -47,3 +47,4 @@ class NSMCDataset(Dataset):
 
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
+    
