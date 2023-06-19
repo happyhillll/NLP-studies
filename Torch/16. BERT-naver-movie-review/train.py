@@ -37,15 +37,15 @@ def run():
     model = BERTClassifier(plm, device)
     loss_fct = CrossEntropyLoss()
 
-    param_optimizer = list(model.named_parameters())
-    no_decay = ['bias', "LayerNorm.weight"]
+    param_optimizer = list(model.named_parameters()) #모델의 파라미터를 불러옴 : 반복문을 돌때마다 하나씩 뱉어줌 이유는 방식을 다르게 학습 시키려고하는거임
+    no_decay = ['bias', "LayerNorm.weight"] #Weight Decay를 적용하지 않을 파라미터를 지정 : 학습이 될수록 미분값이 작아지는데, 이를 방지하기 위해 사용/ 이름에 bias나 layernorm이 들어가는 경우
     optimizer_grouped_parameters = [
-        {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)],
+        {'params': [p for n, p in param_optimizer if not any(nd in n for nd in no_decay)], #n : 파라미터 이름, p : 파라미터 값 
          'weight_decay_rate': 0.1},
-        {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)],
+        {'params': [p for n, p in param_optimizer if any(nd in n for nd in no_decay)], #여기서는 bias랑 LayerNorm.weight만 적용
          'weight_decay_rate': 0.0}
     ]
-    optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=lr)
+    optimizer = torch.optim.AdamW(optimizer_grouped_parameters, lr=lr) 
     
     
 if __name__ == '__main__':
