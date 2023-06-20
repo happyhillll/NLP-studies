@@ -18,4 +18,4 @@
 | 14.NER_CNN extract | ? | 논문 있었음 | ☑️ | 공란 | 공란 |
 | 15.Transformer | 0609 | 트랜스포머 | ☑️ | 공란 | 공란 |
 | 16.BERT-naver-movie-review | 0615 | BERT | ☑️ | 공란 | 공란 |
-
+| 17. | 0619 | BERT Long sentence |  | 공란 | 공란 |
