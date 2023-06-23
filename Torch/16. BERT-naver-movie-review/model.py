@@ -32,17 +32,12 @@ class BERTClassifier(nn.Module):
 
         return logits
 
-<<<<<<< Updated upstream
     # def forward2(self, batch): # forward2 : NSP를 위한 forward
-=======
-    def forward2(self, batch): # forward2 : MLM과 NSP를 위한 forward
->>>>>>> Stashed changes
 
     #     batch["input_ids"] = batch["input_ids"].to(self.device)
     #     batch["attention_mask"] = batch["attention_mask"].to(self.device)
     #     batch["token_type_ids"] = batch["token_type_ids"].to(self.device)
 
-<<<<<<< Updated upstream
     #     outputs = self.bert(**batch)
     #     hidden = outputs.last_hidden_state  # [32, 512, 768]
     #     cls_emb = hidden[:,0,:].squeeze()  # [32, 768]
@@ -61,29 +56,6 @@ class BERTClassifier(nn.Module):
     #     mask_emb = hidden[mask_index, :]  # [32, 3, 768]
 
     #     return nsp_logits, mlm_lgots
-=======
-        outputs = self.bert(**batch) # **batch : dict 형태로 unpacking
-        hidden = outputs.last_hidden_state  # [32, 512, 768] : 32개 문장, 문장당 512개 토큰, 768차원의 임베딩
-        cls_emb = hidden[:,0,:].squeeze()  # [32, 768] :첫번째 attention-head에 대한 feature 출력 의미?
-        # self.nsp_linear = nn.Linear(768,2)
-        nsp_logits = self.nsp_linear(cls_emb)  # [32, 2]
-
-        mask_index = [[3,7,12], [56,86,123], [543, 768, 434]]  # [32, x] 
-        # 첫번쨰 문장에서 3,7,12번째 토큰이 mask되었다는 의미
-        # 두번째 문장에서 56,86,123번째 토큰이 mask되었다는 의미
-        # 세번째 문장에서 543, 768, 434번째 토큰이 mask되었다는 의미
-
-        for i in range(32):
-            cur_mask_index = mask_index[i] #
-            mask_emb = hidden[i, cur_mask_index, :]  # [mask 개수, 768] # i번째 문장에서 mask된 토큰들의 임베딩
-            # self.mlm_linear = nn.Linear(768,len(vocab))
-            self.mlm_linear(mask_emb)  # [mask 개수, vocab 개수] # i번째 문장에서 mask된 토큰들의 임베딩을 vocab 개수만큼의 차원으로 변환
-
-
-        mlm_labels = hidden[mask_index, :]  # [32, 3, 768]
-
-        return nsp_logits, mlm_labels
->>>>>>> Stashed changes
 
 
     # nsp_loss = nsp_loss_fct(nsp_logits, nsp_label)
