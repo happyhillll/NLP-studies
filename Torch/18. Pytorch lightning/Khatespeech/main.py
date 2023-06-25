@@ -16,7 +16,7 @@ train_loader = DataLoader(train_data, batch_size=2)
 plm="klue/roberta-base"
 
 class hateClassifier(L.LightningModule):
-    def __init__(self,plm):
+    def __init__(self):
         super().__init__()
         self.bert = AutoModel.from_pretrained(plm) #pretrained 모델(plm에 쥐어준 모델) 불러오기
         #drop-out : 0부터 1사이의 확률로 뉴런을 제거하는 기법 _ 특성 feature 만을 과도하게 학습하는 오버피팅을 방지하기 위함
