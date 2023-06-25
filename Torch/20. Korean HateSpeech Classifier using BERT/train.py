@@ -3,23 +3,24 @@ from ds import hateDataset
 from transformers import AutoTokenizer
 from torch.utils.data import DataLoader
 from hatemodel import *
-from khatedata import get_train
+from khatedata import *
+dss=ds()
 from torch.nn import CrossEntropyLoss
 import torch
 from tqdm import tqdm
 
 DEBUG = True
 torch.set_num_threads(4)
-device = "cuda:0"
+device = "mps"
 
 def run():
     n_epoch = 3
-    bsz = 32
+    bsz = 2
     lr = 2e-5
     plm = "klue/roberta-base"
 
 
-    train_data = get_train()
+    train_data = dss.get_train()
     # train_data, test_data = datas[:int(len(datas)*0.9)], datas[int(len(datas)*0.9):]
 
     tokenizer = AutoTokenizer.from_pretrained(plm)

@@ -10,8 +10,23 @@ class hateDataset(Dataset):
     
     def preprocess(self, datas, tokenizer):
         
-        texts=ds().get_train()[0]
-        labels=ds().get_train()[1]
+        texts=ds().get_train()[0][:5000]
+        label=ds().get_train()[1][:5000]
+        labels=list(set(ds().get_train()[1]))
+        vocab={
+            word : idx for idx, word in enumerate(labels)
+        }
+        labelss=[]
+        for i in label:
+            if i in vocab.keys():
+                labelss.append(vocab[i])
+                
+        
+        # vocab={
+        #     word : idx for idx, word in enumerate(labels)
+        # }
+        # labelss=[]
+        # labelss.append(vocab[x] for x in label)
         
         tokens=tokenizer(texts, truncation=True, padding='max_length')
         
@@ -29,7 +44,7 @@ class hateDataset(Dataset):
             }
             self.x.append(token)
         
-        self.y = torch.LongTensor(labels)
+        self.y = torch.LongTensor(labelss)
     
     def __len__(self):
         return len(self.x)

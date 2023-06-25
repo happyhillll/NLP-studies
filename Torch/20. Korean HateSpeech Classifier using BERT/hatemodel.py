@@ -1,5 +1,6 @@
 import torch.nn as nn
 import torch
+print(torch.backends.mps.is_available())
 from transformers import AutoModel
 
 class hateClassifier(nn.Module):
