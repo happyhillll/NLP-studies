@@ -1,3 +1,7 @@
+# main > train, eval / 아니면 따로 놔도 됨
+# model
+# data 관련
+
 from typing import Any, Callable, Optional, Union
 from lightning.pytorch.core.optimizer import LightningOptimizer
 from lightning.pytorch.utilities.types import STEP_OUTPUT
@@ -12,7 +16,6 @@ dss=ds()
 
 train_data = dss.get_train()
 train_loader = DataLoader(train_data, batch_size=2)
-
 plm="klue/roberta-base"
 
 class hateClassifier(L.LightningModule):
@@ -33,7 +36,7 @@ class hateClassifier(L.LightningModule):
         return logits
     
     def configure_optimizers(self):
-        optimizer=torch.optim.AdamW(self.parameters, lr=1e-3)
+        optimizer=torch.optim.AdamW(self.parameters(), lr=1e-3)
         return optimizer
 
     def training_step(self, train_batch, batch_idx):
@@ -44,6 +47,7 @@ class hateClassifier(L.LightningModule):
 
         logits = self.bert(input)
         loss = self.loss_fct(logits, labels)
+        loss = loss/2
         self.log('train_loss',loss,on_epoch=True)
         return loss
 
