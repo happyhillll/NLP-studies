@@ -1,3 +1,7 @@
+# main > train, eval / 아니면 따로 놔도 됨
+# model
+# data 관련
+
 from typing import Any, Callable, Optional, Union
 from lightning.pytorch.core.optimizer import LightningOptimizer
 from lightning.pytorch.utilities.types import STEP_OUTPUT
