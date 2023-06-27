@@ -17,7 +17,7 @@ test= koco.load_dataset('korean-hate-speech', mode='test')
 class ds:
     def __init__(self):
         self.train_dev = train_dev['train']
-        self.test_data = test
+        self.dev_data = train_dev['dev']
         
         self.x_train = []
         for i in range(len(self.train_dev)):
@@ -27,11 +27,17 @@ class ds:
             self.y_train.append(self.train_dev[i]['hate'])
             
         self.x_test = []
-        for i in range(len(self.test_data)):
-            self.x_test.append(self.test_data[i]['comments'])
+        for i in range(len(self.dev_data)):
+            self.x_test.append(self.dev_data[i]['comments'])
+        self.y_test=[]
+        for i in range(len(self.dev_data)):
+            self.y_test.append(self.dev_data[i]['hate'])
 
     def get_train(self):
         return self.x_train, self.y_train
     
     def get_test(self):
-        return self.x_test
+        return self.x_test, self.y_test
+    
+# if __name__ == '__main__':
+#     print()

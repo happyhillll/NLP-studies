@@ -2,16 +2,15 @@
 from torch.utils.data import Dataset
 import torch
 import random
-from data import ds
+from hatedata import ds
 
 class hateDataset(Dataset):
     def __init__(self, data, tokenizer):
         self.preprocess(data, tokenizer) #Dataset을 실행하면 자동으로 preprocess 실행
     
     def preprocess(self, datas, tokenizer):
-        
-        texts=ds().get_train()[0][:5000]
-        label=ds().get_train()[1][:5000]
+        texts=ds().get_train()[0][:1000]
+        label=ds().get_train()[1][:1000]
         labels=list(set(ds().get_train()[1]))
         vocab={
             word : idx for idx, word in enumerate(labels)
@@ -20,7 +19,6 @@ class hateDataset(Dataset):
         for i in label:
             if i in vocab.keys():
                 labelss.append(vocab[i])
-                
         
         # vocab={
         #     word : idx for idx, word in enumerate(labels)
