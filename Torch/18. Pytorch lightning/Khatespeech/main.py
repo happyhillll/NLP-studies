@@ -13,13 +13,17 @@ from transformers import AutoModel
 from hatedata import *
 from torch.utils.data import DataLoader
 from model import hateClassifier
+import torch
+print(torch.cuda.is_available())
+import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
 dss=ds()
 
 train_data = dss.get_train()
 dev_data = dss.get_test()
-train_loader = DataLoader(train_data, batch_size=32)
-dev_loader=DataLoader(dev_data, batch_size=32)
+train_loader = DataLoader(train_data, batch_size=5)
+dev_loader=DataLoader(dev_data, batch_size=5)
 
 model=hateClassifier()
 trainer=L.Trainer(max_epochs=-1)

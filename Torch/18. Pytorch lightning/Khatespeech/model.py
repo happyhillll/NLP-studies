@@ -8,7 +8,6 @@ from torch.optim.optimizer import Optimizer
 from transformers import AutoModel
 from hatedata import *
 from torch.utils.data import DataLoader
-
 class hateClassifier(L.LightningModule):
     def __init__(self):
         super().__init__()
