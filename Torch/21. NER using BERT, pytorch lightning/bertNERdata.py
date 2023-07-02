@@ -3,6 +3,7 @@ from torch.utils.data import DataLoader
 import csv
 from sklearn.model_selection import train_test_split
 
+# http://air.changwon.ac.kr/?page_id=10
 with open('/Users/minjikim/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/label.txt', 'r', encoding='utf-8') as f:
     labels = []
     for line in f:
@@ -45,4 +46,6 @@ class ds:
     
     def get_label(self):
         return self.label
-    
+
+if __name__ == '__main__':
+    print()
