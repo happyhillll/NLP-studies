@@ -13,4 +13,4 @@ scoring을 통해 상위 k개를 mention으로 간주. k: 문서 길이에 비�
 - attention은 앞에랑 맨 마지막이 더 클 확률이 있음
 
 2. 멘션끼리 clustering 
-- 
+-  

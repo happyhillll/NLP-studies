@@ -3,14 +3,6 @@ from torch.utils.data import Dataset
 import torch
 import random
 from bertNERdata import *
-'''
-레이블은 워드 단위로 되어져 있음. token 단위로 해석해야함.
-1. 필요한거
-- char to word [[0 0 1 1 1 1 2 2 2...]]
-- word
-- labels dict 형태로
-- 
-'''
 
 class NERDataset(Dataset):
     def __init__(self, data, tokenizer):
