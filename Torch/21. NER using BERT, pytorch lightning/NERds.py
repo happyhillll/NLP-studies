@@ -10,12 +10,10 @@ class NERDataset(Dataset):
         # self.convert_to_features(texts, unique_values, tokenizer)
         
     def preprocess(self, datas, tokenizer):
-        texts=ds().get_train()[0][:1000]
-        label=ds().get_train()[1][:1000]
-        # 데이터 쪼개기
-        split_data = [d.split() for d in label]
-        # 중복되지 않은 값 모으기
-        unique_values = list(set([value for sublist in split_data for value in sublist]))
+        sentences = ds().get_train()[0][:1000]
+        texts = [text.split(' ') for text in sentences]
+        labels = ds().get_train()[1][:1000]
+        labels = [label.split(' ') for label in labels]
     
     # def convert_to_features (self, texts, unique_values, tokenizer, max_seq_len=-100, unk_token=-100,cls_token_segment_id=0,
     #                              pad_token_segment_id=0,
@@ -28,28 +26,28 @@ class NERDataset(Dataset):
         pad_token_id = tokenizer.pad_token_id #pad_token_id : 0
         
         features=[]
-        vocab = {ner: idx for idx, ner in enumerate(unique_values)}
+        # vocab = {ner: idx for idx, ner in enumerate(unique_values)}
         unk_token = -100
-        vocab[unk_token] = len(vocab)  # Add the [UNK] token to the last index of the vocab
+        # vocab[unk_token] = len(vocab)  # Add the [UNK] token to the last index of the vocab
         
-        slot_labels = []
-        for words in split_data:
-            labels = []
-            for word in words:
-                label = vocab.get(word, vocab[unk_token])
-                labels.append(label)
-            slot_labels.append(labels)
+        # slot_labels = []
+        # for words in split_data:
+        #     labels = []
+        #     for word in words:
+        #         label = vocab.get(word, vocab[unk_token])
+        #         labels.append(label)
+        #     slot_labels.append(labels)
         
-        label = [', '.join(map(str, labels)) for labels in slot_labels]
+        # label = [', '.join(map(str, labels)) for labels in slot_labels]
 
-        texts = [text.split() for text in texts]
-        texts = [', '.join(words) for words in texts]
-        label = [label for label in label]
+        # texts = [text.split() for text in texts]
+        # texts = [', '.join(words) for words in texts]
+        # label = [label for label in label]
         
          # Tokenize word by word (for NER)/ 여기 75개로 줄어드는데 왜그러는건지?⭐️
         tokens = []
         label_ids = []
-        for word, slot_label in zip(texts, label):
+        for word, slot_label in zip(texts, labels):
             word_tokens = tokenizer.tokenize(word)  #texts에서 tokenize를 하는게 맞는지?
             if not word_tokens:
                 word_tokens = [unk_token]  # For handling the bad-encoded word
@@ -134,5 +132,5 @@ class NERDataset(Dataset):
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
 
-if __name__ == '__main__':
-    print(NERDataset(ds().get_train(), tokenizer))
+# if __name__ == '__main__':
+#     print(NERDataset(ds().get_train(), tokenizer))
