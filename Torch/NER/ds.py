@@ -14,7 +14,6 @@ from nerdata import *
 
 tokenizer = AutoTokenizer.from_pretrained("klue/roberta-base")
 MAX_TOKEN_LEN = 512
-[UNK]='UNK'
 
 sentences = ds().get_train()[0][:1000]
 texts = [text.split(' ') for text in sentences]
@@ -26,10 +25,13 @@ label_set = ds().get_label()
 label_to_ids = {l:i for i, l in enumerate(label_set)}
 
 label_ids=[]
-word
+word=[]
 
 for word,label in zip(texts,labels):
-    label_ids.extend([label_to_ids.get(word])+[UNK]*(len(word))
+    for i in word:
+        tokenized_word = tokenizer.tokenize(word(i))
+        
+    label_ids.extend([label_to_ids.get(label)])+['UNK']*(len(word))
     
     label_ids.extend([int(label) for label in slot_label.split(',')] + [unk_token] * (len(word_tokens) - 1))
 
