@@ -43,14 +43,19 @@ sentence_label_ids=[]
 #         for l in label:
 #             label_id=label_to_ids[l]
 #             label_ids.extend([label_id]+['UNK']*(len(word_tokens)-1))
-    
 
-for sentence, label in zip(texts, labels):
+label_idx=[]
+#label_to_ids
+for i in flat_labels:
+    id=label_to_ids.get(i)
+    label_ids.append(id)
+
+for sentence, label in zip(texts, label_ids):
     word_tokens = []
     for i in sentence:
         word_tokens=tokenizer.tokenize(i)
         tokens.append(word_tokens)
-        label_ids.extend([label_to_ids.get(label)]+['UNK']*(len(word_tokens)-1))
+        label_idx.append([label]+['UNK']*(len(word_tokens)-1))
     #label이 변수라서 안돌아감..
     #차라리 label 전부 ids로 바꿔버리고 넣는게 나을듯 
         
