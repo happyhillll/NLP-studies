@@ -3,14 +3,16 @@ from torch.utils.data import DataLoader
 import csv
 from sklearn.model_selection import train_test_split
 
+#'/Users/minjikim/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/label.txt'
 # http://air.changwon.ac.kr/?page_id=10
-with open('/Users/minjikim/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/label.txt', 'r', encoding='utf-8') as f:
+with open('/Users/kakao/Documents/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/label.txt', 'r', encoding='utf-8') as f:
     labels = []
     for line in f:
         labels.append(line.strip())
     print(labels)
 
-filename="/Users/minjikim/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/train.tsv"
+#filename="/Users/minjikim/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/train.tsv"
+filename='/Users/kakao/Documents/GitHub/NLP-studies/Torch/21. NER using BERT, pytorch lightning/data/train.tsv'
 
 with open(filename, 'r', encoding='utf-8') as tsvfile:
     data = []

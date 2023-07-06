@@ -30,21 +30,30 @@ tokens=[]
 
 for sentence, label in zip(texts, labels):
     tokenized_sentence=[]
-    tokenized_sentence=tokenizer.tokenize(sentence)
+    for i in sentence:
+       tokenized_word = tokenizer.tokenize(i)
+       tokenized_sentence.append(tokenized_word)
     tokens.append(tokenized_sentence)
     label_ids.append(label_to_ids.get(label))
+        
+#         tokenized_sentence=tokenizer.tokenize(i)
+#         tokens.append(tokenized_sentence)
+       
+       
+
+# label_ids.append(label_to_ids.get(label))
 # 분명 zip으로 푸는 방법이 있을텐데. 일단 보류?    
 
 
 
-for word,label in zip(texts,labels):
-    for sentence in texts:
-        tokenized_sentence=[]
-        for word in sentence:
-            tokenized_sentence += tokenizer.tokenize(word)
-        tokens.append(tokenized_sentence)
-    for l in label:
-        label_ids.append(label_to_ids.get(l))
+# for word,label in zip(texts,labels):
+#     for sentence in texts:
+#         tokenized_sentence=[]
+#         for word in sentence:
+#             tokenized_sentence += tokenizer.tokenize(word)
+#         tokens.append(tokenized_sentence)
+#     for l in label:
+#         label_ids.append(label_to_ids.get(l))
     
     
     
