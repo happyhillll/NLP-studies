@@ -13,98 +13,57 @@ from nerdata import *
 # label_to_ids = {l:i for i, l in enumerate(label_set)}
 
 tokenizer = AutoTokenizer.from_pretrained("klue/roberta-base")
+cls_token = tokenizer.cls_token
+sep_token = tokenizer.sep_token
+unk_token = tokenizer.unk_token
+pad_token_id = tokenizer.pad_token_id
 MAX_TOKEN_LEN = 512
 
 sentences = ds().get_train()[0][:1000]
 texts = [text.split(' ') for text in sentences]
-#이중리스트 없애기
-flat_texts=sum(texts,[])
 labels = ds().get_train()[1][:1000]
 labels = [l.split(' ') for l in labels]
-#이중리스트 없애기
-flat_labels=sum(labels,[])
 
 label_set = ds().get_label()
 
 label_to_ids = {l:i for i, l in enumerate(label_set)}
+label_to_ids['[PAD]'] = 30
+label_to_ids['[CLS]'] = 31
+label_to_ids['[SEP]'] = 32
+label_to_ids['[UNK]'] = 33
 
-label_id=[]
-label_ids=[]
-tokens=[]
-tokenized_word=[]
-int_label=[]
-sentence_label_ids=[]
+all_input_ids=[]
+all_attention_mask=[]
+all_token_type_ids=[]
 
-# for sentence, label in zip(texts, labels):
-#     word_tokens = []
-#     for i in sentence:
-#         word_tokens=tokenizer.tokenize(i)
-#         tokens.append(word_tokens)
-#         for l in label:
-#             label_id=label_to_ids[l]
-#             label_ids.extend([label_id]+['UNK']*(len(word_tokens)-1))
-
-label_idx=[]
-#label_to_ids
-for i in flat_labels:
-    id=label_to_ids.get(i)
-    label_ids.append(id)
-
-for sentence, label in zip(texts, label_ids):
-    word_tokens = []
-    for i in sentence:
-        word_tokens=tokenizer.tokenize(i)
-        tokens.append(word_tokens)
-        label_idx.append([label]+['UNK']*(len(word_tokens)-1))
-    #label이 변수라서 안돌아감..
-    #차라리 label 전부 ids로 바꿔버리고 넣는게 나을듯 
-        
-    # for sentence, label in zip(texts, labels):
-#     tokenized_sentence=[]
-#     for word in sentence:
-#         tokenized_word=tokenizer.tokenize(word)
-#         tokenized_sentence.extend(tokenized_word)
-#     tokens.append(tokenized_sentence)
-#     for i in label:
-#         sentence_label_ids = [label_to_ids[label] for label in i]
-#     label_ids.append(sentence_label_ids)
-        
-    #     int_label=label_to_ids.get(i)
-    #     sentence_label_ids.extend(int_label)
-    # label_ids.append(sentence_label_ids)
-    #  tokens.append(tokenized_sentence)
-    # label_ids.append(label_to_ids.get(label))
-# 분명 zip으로 푸는 방법이 있을텐데. 일단 보류?    
-    
-
-
-for word,label in zip(texts,labels):
-    for sentence in texts:
-        tokenized_sentence=[]
-        for word in sentence:
-            tokenized_sentence += tokenizer.tokenize(word)
-        tokens.append(tokenized_sentence)
-    for l in label:
-        label_ids.append(label_to_ids.get(l))
-    
-    
-    
-    
-    # wordd.append(word)
-    # label_ids.append(label)
-    
-    # for i in word:
-    #     tokenized_word = tokenizer.tokenize(i)
-    #     wordd.append(tokenized_word)
-        
-        
-    label_ids.extend([label_to_ids.get(label)])+['UNK']*(len(word))
-    
-    label_ids.extend([int(label) for label in slot_label.split(',')] + [unk_token] * (len(word_tokens) - 1))
-
-tokens=[]
-for words in texts:
-    for w in words:
+for sentence, label in zip(texts, labels):
+    sent_tokens=[]
+    sent_labels=[]  
+    for w in sentence:
         word_tokens=tokenizer.tokenize(w)
-        tokens+=word_tokens
-        print()
+        sent_tokens.extend(word_tokens)
+    for l in label:
+        sent_labels.extend([l]+[unk_token]*(len(word_tokens)-1))
+    
+    #label_ids
+    label_ids=[]
+    for label in sent_labels:
+        idx=label_to_ids[label]
+        label_ids.append(idx)
+    
+    sent_tokens=[cls_token]+sent_tokens+[sep_token]
+    sent_labels=[pad_token_id]+label_ids+[pad_token_id]
+    
+    #sent_tokens랑 sent_labels 512길이로 패딩
+    sent_tokens.extend([pad_token_id]*(MAX_TOKEN_LEN-len(sent_tokens)))
+    sent_labels.extend([pad_token_id]*(MAX_TOKEN_LEN-len(sent_labels)))
+    
+    sent_tokens = [str(token) for token in sent_tokens]
+    
+    input_ids = tokenizer.convert_tokens_to_ids(sent_tokens)
+    attention_mask = [1 if token_id != 1 else 0 for token_id in input_ids] #패딩토큰에는 0
+    token_type_ids = [0 if token_id == 1 else 1 for token_id in attention_mask]
+    
+    all_input_ids.append(input_ids)
+    all_attention_mask.append(attention_mask)
+    all_token_type_ids.append(token_type_ids)
