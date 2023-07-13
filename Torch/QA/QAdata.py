@@ -8,26 +8,26 @@ print(dataset['train'][0])
 
 class ds:
     def __init__(self):
-        self.x_train_q = []
-        self.x_train_context = []
-        self.y_train = []
+        self.train_question = []
+        self.train_context = []
+        self.train_answer = []
         for i in range(len(dataset['train'])):
-            self.x_train_q.append(dataset['train'][i]['question'])
-            self.x_train_context.append(dataset['train'][i]['context'])
-            self.y_train.append(dataset['train'][i]['answers']['text'][0])
+            self.train_question.append(dataset['train'][i]['question'])
+            self.train_context.append(dataset['train'][i]['context'])
+            self.train_answer.append(dataset['train'][i]['answers'])
     
-        self.x_val_q = []
-        self.x_val_context = []
-        self.y_val = []
+        self.val_question = []
+        self.val_context = []
+        self.val_answer = []
         for i in range(len(dataset['validation'])):
-            self.y_train_q.append(dataset['validation'][i]['question'])
-            self.y_train_context.append(dataset['validation'][i]['context'])
-            self.y_train.append(dataset['validation'][i]['answers']['text'][0])
+            self.val_question.append(dataset['validation'][i]['question'])
+            self.val_context.append(dataset['validation'][i]['context'])
+            self.val_answer.append(dataset['validation'][i]['answers'])
     
     def get_train(self):
-        return self.x_train_q, self.x_train_context, self.y_train
+        return self.train_question, self.train_context, self.train_answer
     
     def get_val(self):
-        return self.x_val_q, self.x_val_context, self.y_val
-    
-    
+        return self.val_question, self.val_context, self.val_answer
+# if __name__ == '__main__':
+#     ds=ds()
