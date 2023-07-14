@@ -45,6 +45,9 @@ class QADataset(Dataset):
         
         return answers,contexts    
 
+        # 토크나이징 하고
+        # train+question 붙이고
+        # 학습을 그냥 두번 하면 되는지????
     def tokenizing(self,datas,tokenizer):
         tokenizer=AutoTokenizer.from_pretrained("ainize/klue-bert-base-mrc")
         tokenizer(datas['train'][0]['question'],datas['train'][0]['context'],max_length=512,truncation=True,padding="max_length",return_token_type_ids=False)
