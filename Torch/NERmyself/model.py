@@ -40,8 +40,9 @@ class NER_classifier(L.LightningModule):
         self.log('train_loss',loss,on_epoch=True)
         return loss
     
+    #여기 input만 들어가야함
     def validation_step(self, val_batch, batch_idx):
-        input, labels=val_batch
+        input=val_batch
         input['input_ids'] = input['input_ids'].squeeze()
         input['attention_mask'] = input['attention_mask'].squeeze()
         input['token_type_ids'] = input['token_type_ids'].squeeze()

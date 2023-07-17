@@ -29,8 +29,7 @@ class QADataset(Dataset):
                     end_idx.append(str(i+len(w)))
                     answer['answer_end']=end_idx
             
-            
-            #이거 꼭 해줘야하는지? : 하려고 하니까 리스트에 2개가 들어와있는 경우 for문을 다시 돌려야 하는거 같음
+            # #이거 꼭 해줘야하는지? : 하려고 하니까 리스트에 2개가 들어와있는 경우 for문을 다시 돌려야 하는거 같음
             # for start_id,end_id in zip(start_idx,end_idx):
             #     start_id=int(start_id)
             #     end_id=int(end_id)
@@ -45,9 +44,6 @@ class QADataset(Dataset):
         
         return answers,contexts    
 
-        # 토크나이징 하고
-        # train+question 붙이고
-        # 학습을 그냥 두번 하면 되는지????
     def tokenizing(self,datas,tokenizer):
         tokenizer=AutoTokenizer.from_pretrained("ainize/klue-bert-base-mrc")
         tokenizer(datas['train'][0]['question'],datas['train'][0]['context'],max_length=512,truncation=True,padding="max_length",return_token_type_ids=False)
