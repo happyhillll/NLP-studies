@@ -31,3 +31,5 @@ class ds:
         return self.val_question, self.val_context, self.val_answer
 # if __name__ == '__main__':
 #     ds=ds()
+
+print(2462+2511+2567+2598)
