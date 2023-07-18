@@ -41,5 +41,5 @@ dss=ds()
 
 train_data = dss.get_train()
 tokenizer=AutoTokenizer.from_pretrained("ainize/klue-bert-base-mrc")
-train_data = QADataset(train_data[2],train_data[1],train_data,tokenizer)
+train_data = QADataset(train_data[2],train_data[1],train_data[0],tokenizer)
 print('a')

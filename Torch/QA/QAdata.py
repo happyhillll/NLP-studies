@@ -15,7 +15,7 @@ class ds:
             self.train_question.append(dataset['train'][i]['question'])
             self.train_context.append(dataset['train'][i]['context'])
             self.train_answer.append(dataset['train'][i]['answers'])
-    
+        
         self.val_question = []
         self.val_context = []
         self.val_answer = []
