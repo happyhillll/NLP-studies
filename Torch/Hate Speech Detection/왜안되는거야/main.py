@@ -20,4 +20,5 @@ dev_loader=DataLoader(dev_data, batch_size=1)
 
 model=hateClassifier()
 trainer=L.Trainer(max_epochs=1000)
-trainer.fit(model, train_loader, dev_loader) #데이터 로더 넣어서 학습시켜
+trainer.fit(model, train_loader) #데이터 로더 넣어서 학습시켜
+trainer.validate(model)

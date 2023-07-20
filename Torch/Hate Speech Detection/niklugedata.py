@@ -4,7 +4,7 @@ class ds:
     def __init__(self):
         self.train_data = []
 
-        with open("/Users/minjikim/GitHub/NLP-studies/Torch/Hate Speech Detection/NIKL_AU_2023_COMPETITION_v1.0/nikluge-au-2022-train.jsonl","r",encoding="utf-8") as f:
+        with open("/Users/kakao/Documents/GitHub/NLP-studies/Torch/Hate Speech Detection/NIKL_AU_2023_COMPETITION_v1.0/nikluge-au-2022-train.jsonl","r",encoding="utf-8") as f:
                 for line in f:
                     data = json.loads(line)
                     self.train_data.append(data)
@@ -14,7 +14,7 @@ class ds:
         
         self.dev_data = []
 
-        with open("/Users/minjikim/GitHub/NLP-studies/Torch/Hate Speech Detection/NIKL_AU_2023_COMPETITION_v1.0/nikluge-au-2022-dev.jsonl","r",encoding="utf-8") as f:
+        with open("/Users/kakao/Documents/GitHub/NLP-studies/Torch/Hate Speech Detection/NIKL_AU_2023_COMPETITION_v1.0/nikluge-au-2022-dev.jsonl","r",encoding="utf-8") as f:
                 for line in f:
                     data = json.loads(line)
                     self.dev_data.append(data)

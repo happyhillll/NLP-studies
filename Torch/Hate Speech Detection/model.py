@@ -24,24 +24,17 @@ class hateClassifier(L.LightningModule):
         optimizer=torch.optim.AdamW(self.parameters(), lr=1e-3)
         return optimizer
     
-    def training_step(self,train_batch, batch_idx):
+    def training_step(self,train_batch,batch_idx):
         input,labels=train_batch
-        input['input_ids']=input['input_ids'].squeeze()
-        input['attention_mask']=input['attention_mask'].squeeze()
-        input['token_type_ids']=input['token_type_ids'].squeeze()
-        
-        logits=self.bert(input)
-        loss=self.loss_fct(logits,labels)
+
+        logits=self.bert(**input)
+        loss=self.loss_fct(logits.pooler_output,labels)
         self.log('train_loss',loss,on_epoch=True)
         return loss
     
-    def validation_step(self, val_batch, batch_idx):
-        input, labels=val_batch
-        input['input_ids'] = input['input_ids'].squeeze()
-        input['attention_mask'] = input['attention_mask'].squeeze()
-        input['token_type_ids'] = input['token_type_ids'].squeeze()
-
-        logits = self.bert(input)
-        loss = self.loss_fct(logits, labels)
-        self.log('val_loss', loss, on_epoch=True)
-        return {"loss":loss,"pred":logits,"label":labels}
+    def validation_step(self, val_batch, batch_idx): 
+        val_input, val_labels=val_batch
+        val_logits = self.bert(**val_input)
+        val_loss = self.loss_fct(val_logits.pooler_output, val_labels)
+        self.log('val_loss', val_loss, on_epoch=True)
+        return val_loss

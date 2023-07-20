@@ -8,10 +8,10 @@ class HateDataset(Dataset):
         self.preprocess(data, tokenizer)
     
     def preprocess(self, data, tokenizer):
-        texts=ds().get_train()[0]
-        labels=ds().get_dev()[1]
+        self.texts=data[0]
+        self.labels=data[1]
         
-        tokens=tokenizer(texts, truncation=True, padding='max_length')
+        tokens=tokenizer(self.texts, truncation=True, padding='max_length')
         
         tokens.input_ids=torch.LongTensor(tokens.input_ids)
         tokens.attention_mask=torch.LongTensor(tokens.attention_mask)
@@ -27,8 +27,8 @@ class HateDataset(Dataset):
             }
             self.x.append(token)
         
-        self.y=torch.LongTensor(labels)
-    
+        self.y=torch.LongTensor(self.labels)
+        
     def __len__(self):
         return len(self.x)
 
