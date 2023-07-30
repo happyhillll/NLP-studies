@@ -3,9 +3,9 @@ from torch.utils.data import dataset
 import csv
 
 #집 : /Users/minjikim/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_train.tsv
-
+#회사 : /Users/kakao/Documents/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_train.tsv
 #train
-filename='/Users/minjikim/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_train.tsv'
+filename='/Users/kakao/Documents/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_train.tsv'
 f=open(filename,'r',encoding='utf-8')
 rdr=csv.reader(f,delimiter='\t')
 train=list(rdr)
@@ -13,7 +13,7 @@ train=list(rdr)
 f.close()
 
 #val
-filename='/Users/minjikim/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_validation.tsv'
+filename='/Users/kakao/Documents/GitHub/NLP-studies/Torch/roman_urdu_hate_speech/data/task_1_validation.tsv'
 f=open(filename,'r',encoding='utf-8')
 rdr=csv.reader(f,delimiter='\t')
 val=list(rdr)
