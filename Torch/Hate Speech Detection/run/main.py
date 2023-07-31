@@ -7,7 +7,7 @@ import lightning as L
 from typing import Any, Callable, Optional, Union
 from lightning.pytorch.core.optimizer import LightningOptimizer
 from lightning.pytorch.utilities.types import STEP_OUTPUT
-from nikluemodel import hateClassifierpt
+from nikluemodel import hateClassifier
 
 data=ds()
 

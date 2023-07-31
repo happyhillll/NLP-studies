@@ -24,11 +24,6 @@ class ds:
                     data = json.loads(line)
                     self.dev_data.append(data)
 
-        # with open("/Users/kakao/Documents/GitHub/NLP-studies/Torch/Hate Speech Detection/NIKL_AU_2023_COMPETITION_v1.0/nikluge-au-2022-dev.jsonl","r",encoding="utf-8") as f:
-        #         for line in f:
-        #             data = json.loads(line)
-        #             self.dev_data.append(data)
-
         self.x_dev=list(utterance['input'] for utterance in self.dev_data)
         self.y_dev=list(label['output'] for label in self.dev_data)
     
