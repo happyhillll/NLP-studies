@@ -23,4 +23,4 @@ model=hateClassifier()
 trainer=L.Trainer(max_epochs=100) #여기에 다양한거 넣어줄 수 있음
 trainer.fit(model, train_loader, dev_loader) #데이터 로더 넣어서 학습시켜
     
-    # /opt/homebrew/bin/python3 pytorch-lightning
+ # /opt/homebrew/bin/python3 pytorch-lightning
